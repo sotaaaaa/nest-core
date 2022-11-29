@@ -5,6 +5,7 @@ import { TransformInterceptor } from '../common/interceptors/transform.intercept
 import { INestApplication, Logger } from '@nestjs/common';
 import { AppUtils } from '../common/utils/app.utils';
 import { ApplicationSetupOptions } from './types/gateway.type';
+import { KafkaTransporter, NatsTransporter } from 'src/core';
 
 /**
  * Thực hiện khởi tạo một application
