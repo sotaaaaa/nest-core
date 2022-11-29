@@ -1,6 +1,7 @@
 import { INestApplication, Logger } from '@nestjs/common';
 import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import _ from 'lodash';
+import { ApplicationSetupOptions } from 'src/application';
 import { AppUtils } from 'src/common';
 import { ConfigCore } from 'src/shared';
 import { MicroserviceSetupOptions } from '../types';
@@ -11,7 +12,7 @@ export class NatsTransporter {
 
   public static setup(
     app: INestApplication,
-    options: MicroserviceSetupOptions,
+    options: MicroserviceSetupOptions | ApplicationSetupOptions,
   ) {
     this.options = AppUtils.loadFile(options.configPath);
     this.application = app;

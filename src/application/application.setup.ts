@@ -35,6 +35,13 @@ export async function applicationSetup(
     app.useGlobalPipes(new ValidationPipe(options.configPath));
   }
 
+  /**
+   * Danh sách các transporter được hỗ trợ
+   * - KAFKA và NATS
+   */
+  NatsTransporter.setup(app, options);
+  KafkaTransporter.setup(app, options);
+
   // Khởi service và lắng nghe dưới chế độ microservice
   await app.startAllMicroservices();
   await app.listen(options.port);
