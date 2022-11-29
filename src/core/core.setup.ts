@@ -5,6 +5,7 @@ import { ConfigCore } from './../shared/types/config.type';
 import { AppUtils } from './../common/utils/app.utils';
 import { INestApplication, Logger } from '@nestjs/common';
 import { MicroserviceSetupOptions } from './types';
+import { KafkaTransporter, NatsTransporter } from './transporters';
 
 export async function microserviceSetup(
   app: INestApplication,
@@ -28,6 +29,13 @@ export async function microserviceSetup(
   if (application.validation.enable) {
     app.useGlobalPipes(new ValidationPipe(options.configPath));
   }
+
+  /**
+   * Danh sách các transporter được hỗ trợ
+   * - KAFKA và NATS
+   */
+  NatsTransporter.setup(app, options);
+  KafkaTransporter.setup(app, options);
 
   //- Khởi service và lắng nghe dưới chế độ microservice
   await app.startAllMicroservices();

@@ -1,0 +1,53 @@
+import { INestApplication, Logger } from '@nestjs/common';
+import { Transport, MicroserviceOptions } from '@nestjs/microservices';
+import _ from 'lodash';
+import { AppUtils } from 'src/common';
+import { ConfigCore } from 'src/shared';
+import { MicroserviceSetupOptions } from '../types';
+
+export class KafkaTransporter {
+  public static options: ConfigCore;
+  public static application: INestApplication;
+
+  public static setup(
+    app: INestApplication,
+    options: MicroserviceSetupOptions,
+  ) {
+    this.options = AppUtils.loadFile(options.configPath);
+    this.application = app;
+
+    // Cấu hình toàn bộ transporters theo cấu hình ở file yaml
+    this.setupTransporters();
+  }
+
+  /**
+   * Trả về cấu hình kafka sevrer
+   * @param configs
+   */
+  static getTransporterConfigs(configs: ConfigCore) {
+    const enable: boolean = _.get(configs, 'transporters.kafka.enable', false);
+    const options = _.get(configs, 'transporters.kafka.options');
+
+    return {
+      enable: enable,
+      options: options,
+    };
+  }
+
+  /**
+   * Cấu hình kafka event driver
+   */
+  public static setupTransporters() {
+    const kafka = this.getTransporterConfigs(this.options);
+
+    //> Nếu kafka được bật sẽ thực hiện connect đến kafka
+    if (kafka.enable) {
+      this.application.connectMicroservice<MicroserviceOptions>(
+        { transport: Transport.KAFKA, options: kafka.options },
+        { inheritAppConfig: true },
+      );
+
+      Logger.log('[Nest-core] Connected to plugin nest-kafka');
+    }
+  }
+}
