@@ -1,6 +1,6 @@
 import { INestApplication, Logger } from '@nestjs/common';
 import { Transport, MicroserviceOptions } from '@nestjs/microservices';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { ApplicationSetupOptions } from 'src/application';
 import { AppUtils } from 'src/common';
 import { ConfigCore } from 'src/shared';
