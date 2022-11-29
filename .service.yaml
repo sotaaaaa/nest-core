@@ -1,0 +1,12 @@
+version: "2.0"
+
+services: 
+  api-gateway:
+    - authenticate: "on"
+    - proxy: "on"
+
+middlewares:
+  rate-limit:
+    - router: "*"
+    - window-ws: 100
+    - max-request-per-ip: 1000
