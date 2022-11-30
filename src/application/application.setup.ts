@@ -23,18 +23,18 @@ export async function applicationSetup(
   // Enable shutdown hooks
   app.enableShutdownHooks();
 
+  // Bật validation nếu cờ bật bằng true (Mặc định bằng false)
+  const { application } = AppUtils.loadFile<ConfigCore>(options.configPath);
+  if (application.validation.enable) {
+    app.useGlobalPipes(new ValidationPipe(options.configPath));
+  }
+
   /**
    * Setup các interceptors cho toàn bộ application
    * Lưu ý có thể bật tắt trong file config
    */
-  const { application } = AppUtils.loadFile<ConfigCore>(options.configPath);
-  app.useGlobalInterceptors(new TransformInterceptor());
   app.useGlobalFilters(new ErrorApplicationFilter());
-
-  // Bật validation nếu cờ bật bằng true (Mặc định bằng false)
-  if (application.validation.enable) {
-    app.useGlobalPipes(new ValidationPipe(options.configPath));
-  }
+  app.useGlobalInterceptors(new TransformInterceptor());
 
   /**
    * Danh sách các transporter được hỗ trợ
