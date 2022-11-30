@@ -5,7 +5,7 @@ import { TransformInterceptor } from '../common/interceptors/transform.intercept
 import { INestApplication, Logger } from '@nestjs/common';
 import { AppUtils } from '../common/utils/app.utils';
 import { ApplicationSetupOptions } from './types/gateway.type';
-import { KafkaTransporter, NatsTransporter } from 'src/core';
+import { CoreTransporter } from 'src/common';
 
 /**
  * Thực hiện khởi tạo một application
@@ -19,6 +19,9 @@ export async function applicationSetup(
 ) {
   // Kill process
   AppUtils.killAppWithGrace(app);
+
+  // Khởi tạo các transporter hỗ trợ
+  CoreTransporter.startAllTransporters(app, options);
 
   // Enable shutdown hooks
   app.enableShutdownHooks();
@@ -35,13 +38,6 @@ export async function applicationSetup(
    */
   app.useGlobalFilters(new ErrorApplicationFilter());
   app.useGlobalInterceptors(new TransformInterceptor());
-
-  /**
-   * Danh sách các transporter được hỗ trợ
-   * - KAFKA và NATS
-   */
-  NatsTransporter.setup(app, options);
-  KafkaTransporter.setup(app, options);
 
   // Khởi service và lắng nghe dưới chế độ microservice
   await app.startAllMicroservices();

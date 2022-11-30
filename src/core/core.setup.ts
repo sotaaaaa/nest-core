@@ -5,7 +5,7 @@ import { ConfigCore } from './../shared/types/config.type';
 import { AppUtils } from './../common/utils/app.utils';
 import { INestApplication, Logger } from '@nestjs/common';
 import { MicroserviceSetupOptions } from './types';
-import { KafkaTransporter, NatsTransporter } from './transporters';
+import { CoreTransporter } from '../common/transporters';
 
 export async function microserviceSetup(
   app: INestApplication,
@@ -13,6 +13,9 @@ export async function microserviceSetup(
 ) {
   // Kill process
   AppUtils.killAppWithGrace(app);
+
+  // Khởi tạo các transporter hỗ trợ
+  CoreTransporter.startAllTransporters(app, options);
 
   // Enable shutdown hooks
   app.enableShutdownHooks();
@@ -28,13 +31,6 @@ export async function microserviceSetup(
    * Lưu ý có thể bật tắt trong file config
    */
   app.useGlobalFilters(new ErrorMicroserviceFilter());
-
-  /**
-   * Danh sách các transporter được hỗ trợ
-   * - KAFKA và NATS
-   */
-  NatsTransporter.setup(app, options);
-  KafkaTransporter.setup(app, options);
 
   //- Khởi service và lắng nghe dưới chế độ microservice
   await app.startAllMicroservices();

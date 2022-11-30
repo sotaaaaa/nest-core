@@ -4,9 +4,9 @@ import * as _ from 'lodash';
 import { ApplicationSetupOptions } from 'src/application';
 import { AppUtils } from 'src/common';
 import { ConfigCore } from 'src/shared';
-import { MicroserviceSetupOptions } from '../types';
+import { MicroserviceSetupOptions } from '../../core/types';
 
-export class KafkaTransporter {
+export class NatsTransporter {
   public static options: ConfigCore;
   public static application: INestApplication;
 
@@ -22,12 +22,12 @@ export class KafkaTransporter {
   }
 
   /**
-   * Trả về cấu hình kafka sevrer
+   * Trả về cấu hình nats sevrer
    * @param configs
    */
   static getTransporterConfigs(configs: ConfigCore) {
-    const enable: boolean = _.get(configs, 'transporters.kafka.enable', false);
-    const options = _.get(configs, 'transporters.kafka.options');
+    const enable: boolean = _.get(configs, 'transporters.nats.enable', false);
+    const options = _.get(configs, 'transporters.nats.options');
 
     return {
       enable: enable,
@@ -36,19 +36,19 @@ export class KafkaTransporter {
   }
 
   /**
-   * Cấu hình kafka event driver
+   * Cấu hình nats event driver
    */
   public static setupTransporters() {
-    const kafka = this.getTransporterConfigs(this.options);
+    const nats = this.getTransporterConfigs(this.options);
 
-    //> Nếu kafka được bật sẽ thực hiện connect đến kafka
-    if (kafka.enable) {
+    //> Nếu nats được bật sẽ thực hiện connect đến nats
+    if (nats.enable) {
       this.application.connectMicroservice<MicroserviceOptions>(
-        { transport: Transport.KAFKA, options: kafka.options },
+        { transport: Transport.NATS, options: nats.options },
         { inheritAppConfig: true },
       );
 
-      Logger.log('[Nest-core] Connected to plugin nest-kafka');
+      Logger.log('[Nest-core] Connected to plugin nest-nats');
     }
   }
 }
