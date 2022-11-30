@@ -9,9 +9,11 @@ export class ErrorException extends HttpException {
     const message = 'An error occurred';
 
     if (typeof error === 'number') {
-      super({ code: error, message }, HttpStatus.OK);
+      const context = { code: error, message };
+      super(context, HttpStatus.OK);
     } else {
-      super({ ...error, message: error.message || message }, HttpStatus.OK);
+      const context = { ...error, message: error.message || message };
+      super(context, HttpStatus.OK);
     }
   }
 }
