@@ -26,7 +26,7 @@ export class KafkaTransporter {
    * @param configs
    */
   static getTransporterConfigs(configs: ConfigCore) {
-    const enable: boolean = _.get(configs, 'transporters.kafka.enable', false);
+    const enable: boolean = _.get(configs, 'transporters.kafka.enable');
     const options = _.get(configs, 'transporters.kafka.options');
 
     return {
