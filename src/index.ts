@@ -9,3 +9,4 @@ export * from './application';
 export * from './common';
 export * from './core';
 export * from './shared';
+export * from './configuration';
