@@ -11,8 +11,6 @@ export class ConfigurationModule {
   static forMongoose(connectionName: string): DynamicModule {
     return {
       module: ConfigurationModule,
-      providers: [ConfigurationService],
-      exports: [ConfigurationService],
       imports: [
         MongooseModule.forFeature(
           [{ name: ConfigurationDocument.name, schema: ConfigurationSchema }],
@@ -20,6 +18,8 @@ export class ConfigurationModule {
         ),
         CacheModule.register(),
       ],
+      providers: [ConfigurationService],
+      exports: [ConfigurationService],
     };
   }
 }
