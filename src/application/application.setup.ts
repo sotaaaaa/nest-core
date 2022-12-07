@@ -30,7 +30,7 @@ export async function applicationSetup(
   const { application } = AppUtils.loadFile<ConfigCore>(options.configPath);
   if (application.validation.enable) {
     Logger.log(`[NestCore] Validation is enabled`);
-    app.useGlobalPipes(new ValidationPipe(options.configPath));
+    app.useGlobalPipes(new ValidationPipe());
   }
 
   /**
