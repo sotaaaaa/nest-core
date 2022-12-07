@@ -29,6 +29,7 @@ export async function applicationSetup(
   // Bật validation nếu cờ bật bằng true (Mặc định bằng false)
   const { application } = AppUtils.loadFile<ConfigCore>(options.configPath);
   if (application.validation.enable) {
+    Logger.log(`[NestCore] Validation is enabled`);
     app.useGlobalPipes(new ValidationPipe(options.configPath));
   }
 
