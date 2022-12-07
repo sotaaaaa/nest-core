@@ -46,5 +46,5 @@ export async function applicationSetup(
   // Log ra màn hình
   const serviceName = options.serviceName;
   const serviceUrl = await app.getUrl();
-  Logger.log(`[Nest-core] Service ${serviceName} running on: ${serviceUrl}`);
+  Logger.log(`[NestCore] Service ${serviceName} running on: ${serviceUrl}`);
 }

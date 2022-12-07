@@ -23,6 +23,7 @@ export async function microserviceSetup(
   // Bật validation nếu cờ bật bằng true (Mặc định bằng false)
   const { application } = AppUtils.loadFile<ConfigCore>(options.configPath);
   if (application.validation.enable) {
+    Logger.log(`[NestCore] Validation is enabled`)
     app.useGlobalPipes(new ValidationPipe(options.configPath));
   }
 
@@ -39,5 +40,5 @@ export async function microserviceSetup(
   // Log ra màn hình
   const serviceName = options.serviceName;
   const serviceUrl = await app.getUrl();
-  Logger.log(`[Nest-core] Service ${serviceName} running on: ${serviceUrl}`);
+  Logger.log(`[NestCore] Service ${serviceName} running on: ${serviceUrl}`);
 }

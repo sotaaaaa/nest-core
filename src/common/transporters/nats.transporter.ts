@@ -48,7 +48,7 @@ export class NatsTransporter {
         { inheritAppConfig: true },
       );
 
-      Logger.log('[Nest-core] Connected to plugin nest-nats');
+      Logger.log('[NestCore] Connected to plugin nest-nats');
     }
   }
 }

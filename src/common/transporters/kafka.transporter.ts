@@ -48,7 +48,7 @@ export class KafkaTransporter {
         { inheritAppConfig: true },
       );
 
-      Logger.log('[Nest-core] Connected to plugin nest-kafka');
+      Logger.log('[NestCore] Connected to plugin nest-kafka');
     }
   }
 }
