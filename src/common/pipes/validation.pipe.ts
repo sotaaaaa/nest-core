@@ -8,6 +8,12 @@ import { ERROR_CODES } from '../constants/error.constant';
 
 @Injectable()
 export class ValidationPipe implements PipeTransform {
+  private configs: ConfigCore;
+
+  constructor(configPath: string) {
+    this.configs = AppUtils.loadFile(configPath);
+  }
+
   async transform<T>(value: T, { metatype }: ArgumentMetadata): Promise<T> {
     if (value === null || !value) {
       value = Object.assign({}, value);
@@ -17,12 +23,9 @@ export class ValidationPipe implements PipeTransform {
       return value;
     }
 
+    const options = this.configs.application.validation.options;
     const object = plainToClass(metatype, value);
-    const errors = await validate(object, {
-      forbidUnknownValues: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    });
+    const errors = await validate(object, options);
 
     if (errors.length === 0) {
       return value;

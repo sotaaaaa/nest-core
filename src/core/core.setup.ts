@@ -14,9 +14,6 @@ export async function microserviceSetup(
   // Kill process
   AppUtils.killAppWithGrace(app);
 
-  // Khởi tạo các transporter hỗ trợ
-  CoreTransporter.startAllTransporters(app, options);
-
   // Enable shutdown hooks
   app.enableShutdownHooks();
 
@@ -24,7 +21,7 @@ export async function microserviceSetup(
   const { application } = AppUtils.loadFile<ConfigCore>(options.configPath);
   if (application.validation.enable) {
     Logger.log(`[NestCore] Validation is enabled`);
-    app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalPipes(new ValidationPipe(options.configPath));
   }
 
   /**
@@ -32,6 +29,9 @@ export async function microserviceSetup(
    * Lưu ý có thể bật tắt trong file config
    */
   app.useGlobalFilters(new ErrorMicroserviceFilter());
+
+  // Khởi tạo các transporter hỗ trợ
+  CoreTransporter.startAllTransporters(app, options);
 
   //- Khởi service và lắng nghe dưới chế độ microservice
   await app.startAllMicroservices();
