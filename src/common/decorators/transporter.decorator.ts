@@ -27,3 +27,10 @@ export const MessageContext = createParamDecorator(
     return context.context;
   },
 );
+
+export const MessageTimestamp = createParamDecorator(
+  (data: string, ctx: ExecutionContext): string => {
+    const context = ctx.switchToRpc().getData();
+    return context?.context?.timestamp || Date.now();
+  },
+);
