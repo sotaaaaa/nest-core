@@ -1,5 +1,7 @@
 import * as yaml from 'js-yaml';
 import * as fs from 'fs';
+import * as mustache from 'mustache';
+
 import { INestApplication, HttpStatus } from '@nestjs/common';
 import { ERROR_CODES } from '../constants/error.constant';
 
@@ -26,7 +28,11 @@ export class AppUtils {
    * @returns
    */
   public static loadFile<T = any>(path: string) {
-    return yaml.load(fs.readFileSync(path, 'utf8')) as T;
+    const raw = fs.readFileSync(path, 'utf8');
+    const custom = mustache.render(raw, process.env, {}, ['${', '}']);
+    const data = yaml.load(custom);
+
+    return data as T;
   }
 
   /**

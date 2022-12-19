@@ -1,6 +1,6 @@
 {
   "name": "@sotaaaaa/nest-core",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "private": false,
   "description": "NestJS - Core module",
   "keywords": [
@@ -75,6 +75,7 @@
     "express": "^4.18.2",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
+    "mustache": "^4.2.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.7"
