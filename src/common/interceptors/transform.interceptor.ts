@@ -17,7 +17,7 @@ export class TransformInterceptor implements NestInterceptor {
         const response = context.switchToHttp().getResponse<Response>();
         response.status(HttpStatus.OK);
 
-        return _.omit(data, ['headers']);
+        return Array.isArray(data) ? data : _.omit(data, ['headers']);
       }),
     );
   }
